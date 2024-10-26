@@ -3,6 +3,12 @@
 #include <iomanip>
 #include <limits> 
 #include <string>
+#include <string>
+#include "Contact.hpp"
+#include <iostream>
+#include <iomanip> 
+#include <cctype>
+#include <cstdlib>
 
 void printGreenTextInBox(const std::string& text)
 {
@@ -33,33 +39,50 @@ void Phonebook::addContact()
 }
 
 void Phonebook::searchContact() const {
-	if (contactCount == 0)
-	{
-		std::cout << "Phonebook is empty!" << std::endl;
-		return;
-	}
-	std::cout << std::right << std::setw(10) << "Index" << "|";
-	std::cout << std::right << std::setw(10) << "First Name" << "|";
-	std::cout << std::right << std::setw(10) << "Last Name" << "|";
-	std::cout << std::right << std::setw(10) << "Nickname" << std::endl;
+    if (contactCount == 0) {
+        std::cout << "Phonebook is empty!" << std::endl;
+        return;
+    }
 
-	for (int i = 0; i < contactCount; i++)
-	{
-		contacts[i].displayContactSummary(i);
-	}
+    std::cout << std::right << std::setw(10) << "Index" << "|";
+    std::cout << std::right << std::setw(10) << "First Name" << "|";
+    std::cout << std::right << std::setw(10) << "Last Name" << "|";
+    std::cout << std::right << std::setw(10) << "Nickname" << std::endl;
 
-	int index;
-	std::cout << "Enter index to view details: ";
-	std::cin >> index;
+    for (int i = 0; i < contactCount; i++) {
+        contacts[i].displayContactSummary(i);
+    }
 
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::string index;
+    int index_num;
 
-	if (index >= 0 && index < contactCount) {
-		contacts[index].displayContactDetails();
-	} else
-	{
-		std::cout << "Invalid index!" << std::endl;
-	}
+    while (true) {
+        std::cout << "Enter index to view details: ";
+        std::getline(std::cin, index);
+
+        bool isNumber = true;
+        for (size_t i = 0; i < index.length(); i++) {
+            if (!std::isdigit(index[i])) {
+                isNumber = false;
+                break;
+            }
+        }
+
+        if (!isNumber || index.empty()) {
+            std::cout << "Invalid number! Please enter only digits." << std::endl;
+            continue; 
+        }
+
+        index_num = std::atoi(index.c_str());
+
+        if (index_num >= 0 && index_num < contactCount) {
+            break; 
+        } else {
+            std::cout << "Invalid index! Please enter a valid index between 0 and " << (contactCount - 1) << "." << std::endl;
+        }
+    }
+
+    contacts[index_num].displayContactDetails();
 }
 
 
