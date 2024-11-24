@@ -12,7 +12,7 @@ int main()
 	std::cout << "Memory address held by valueREF: " << &valueREF << std::endl;
 
 	std::cout << "Value of the string value: " << value << std::endl;
-	std::cout << "Vvalue pointed to by valuePTR: "<< *valuePTR << std::endl;
+	std::cout << "Value pointed to by valuePTR: "<< *valuePTR << std::endl;
 	std::cout << "Value pointed to by valueREF.: " << valueREF << std::endl;
 	return (0);
 }
