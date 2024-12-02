@@ -8,5 +8,6 @@ int main()
 	object.complain("INFO");
 	object.complain("WARNING");
 	object.complain("ERROR");
-	object.complain("RUNDOM");
+	//object.complain("RUNDOM");
+	return 0;
 }

@@ -23,7 +23,12 @@ std::string Replace::replace_s1_to_s2(const std::string& line, const std::string
 
 bool Replace::check_and_open() const
 {
-	
+	if (filename.empty())
+	{
+		std::cerr << "Error: FILE EMPTY" << std::endl;
+		return false;
+	}
+
 	if (s1.empty())
 	{
 		std::cerr << "Error: The search string (s1) cannot be empty." << std::endl;
@@ -37,7 +42,7 @@ bool Replace::check_and_open() const
 		std::cerr << "Error: Cannot open file " << filename << std::endl;
 		return false;
 	}
-	
+
 	std::ofstream outfile((filename + ".replace").c_str());
 
 	if (!outfile.is_open())

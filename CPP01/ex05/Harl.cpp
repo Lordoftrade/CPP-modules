@@ -1,20 +1,36 @@
+#include "Harl.hpp"
+
 void Harl::debug( void )
 {
-	std::cout << "debug" << std::endl;
+	std::cout << "Debugging the issue: everything looks fine so far." << std::endl;
 }
 void Harl::info( void ){
-	std::cout << "info" << std::endl;
+	std::cout << "Here is some information: the system is running smoothly." << std::endl;
 }
 
 void Harl::warning( void ){
-	std::cout << "warning" << std::endl;
+	std::cout << "Warning: something might go wrong, please check it!" << std::endl;
 }
 
 void Harl::error( void ){
-	std::cout << "error" << std::endl;
+	std::cout << "Error: something went wrong, immediate action is required!" << std::endl;
 }
 
 void Harl::complain(const std::string level ){
-	void (Harl)
-	std::string levels[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+	void (Harl::*methodFunc[4])(void) = {
+		&Harl::debug,
+		&Harl::info,
+		&Harl::warning,
+		&Harl::error
+	};
+	std::string levels[4] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+	for (int i = 0; i < 4; i++)
+	{
+		if (levels[i] == level)
+		{
+			(this->*methodFunc[i])();
+			return ;
+		}
+	}
+	std::cout << "Invalid level: " << level << std::endl;
 }

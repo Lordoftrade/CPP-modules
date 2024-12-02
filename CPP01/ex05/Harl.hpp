@@ -1,5 +1,8 @@
 #ifndef HARL_HPP
-#define ARL_HPP
+#define HARL_HPP
+
+#include <string>
+#include <iostream>
 
 class Harl {
 	private:
@@ -10,3 +13,5 @@ class Harl {
 	public:
 		void complain(const std::string level);
 };
+
+#endif
