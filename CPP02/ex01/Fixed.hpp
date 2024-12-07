@@ -1,7 +1,8 @@
 #ifndef FIXED_HPP
 #define FIXED_HPP
-#include <iostream>
 
+#include <iostream>
+#include <cmath> 
 
 class Fixed {
 	private:
@@ -19,15 +20,15 @@ class Fixed {
 		~Fixed();
 
 		Fixed& operator=(const Fixed& another);
-
+		
+		int getRawBits( void ) const;
+		void setRawBits( int const raw );
 		//которая преобразует значение с фиксированной запятой в значение с плавающей запятой.
 		float toFloat( void ) const;
-
 		// которая преобразует значение с фиксированной запятой в целое значение.
 		int toInt( void ) const;
 };
 
-
-
+std::ostream& operator<<(std::ostream& ostream, const Fixed& obj);
 
 #endif
