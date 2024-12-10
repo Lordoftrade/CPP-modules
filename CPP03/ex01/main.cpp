@@ -1,36 +1,60 @@
 #include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 
 int main()
 {
-	ClapTrap robot1("Clappy");
 
-	robot1.attack("Target1");
+    std::cout << "==== Test: Object Creation ====" << std::endl;
+    ScavTrap scav1("Guardian");
+    ScavTrap scav2;
+    ScavTrap scav3(scav1);
 
-    robot1.takeDamage(3);
-    robot1.beRepaired(5);
-    robot1.beRepaired(10);
+    std::cout << "\n==== Test: Attacking ====" << std::endl;
+    scav1.attack("Enemy1");
+    scav1.attack("Enemy2");
 
-	for (int i = 0; i < 10; ++i)
-	{
-		robot1.attack("Target2");
-	}
+    for (int i = 0; i < 50; ++i) { 
+        scav1.attack("Enemy");
+    }
+    scav1.attack("Enemy3");
 
-	robot1.attack("Target3"); // Не может атаковать из-за отсутствия энергии
+    scav1.takeDamage(100);
+    scav1.attack("Enemy4");
 
-	// Попытка ремонта без энергии
-	robot1.beRepaired(5); 
+    std::cout << "\n==== Test: Taking Damage ====" << std::endl;
+    scav2.takeDamage(30);
+    scav2.takeDamage(100);
+    scav2.takeDamage(10);
 
-	//Полное уничтожение (здоровье = 0)
-	robot1.takeDamage(100);
-	robot1.attack("Target4");
-	robot1.beRepaired(5);
+    std::cout << "\n==== Test: Repairing ====" << std::endl;
+    //ScavTrap scav3(scav1);
+    scav3.beRepaired(20);
+    scav3.beRepaired(5);
+    scav3.takeDamage(50);
+    scav3.beRepaired(10);
 
-	ClapTrap robot2(robot1);
-	robot2.attack("Target5");
+    for (int i = 0; i < 50; ++i)
+    {
+        scav3.attack("Dummy");
+    }
+    scav3.beRepaired(10);
 
-	ClapTrap robot3("Dummy");
-	robot3 = robot1;
-	robot3.attack("Target6");
+    std::cout << "\n==== Test: Guard Gate ====" << std::endl;
+    scav3.guardGate();
 
-	return 0;
+    std::cout << "\n==== Test: Copy and Assignment ====" << std::endl;
+    ScavTrap scav4("CopyTarget");
+    scav4 = scav3; // Присваивание
+    scav4.attack("Enemy5");
+    ScavTrap scav5(scav4); // Копирование
+    scav5.attack("Enemy6");
+
+    std::cout << "\n==== Test: Dynamic Allocation ====" << std::endl;
+    ClapTrap* dynamicScav = new ScavTrap("DynamicGuardian");
+    dynamicScav->attack("DynamicEnemy");
+    delete dynamicScav;
+
+    std::cout << "\n==== Test Finished ====" << std::endl;
+
+    return 0;
 }

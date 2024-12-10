@@ -13,8 +13,8 @@ ClapTrap::ClapTrap(const std::string& name) : _name(name), _hitPoints(10), _ener
 //_name(another.name), _hitPoints(another.hitPoints), _energyPoints(another.energyPoints), attackDamage(another.attackDamage)
 ClapTrap::ClapTrap(const ClapTrap& another)
 {
-	std::cout << "ClapTrap " << _name << " copied!" << std::endl;
 	*this = another;
+	std::cout << "ClapTrap " << _name << " copied!" << std::endl;
 }
 
 ClapTrap::~ClapTrap()
@@ -74,7 +74,7 @@ void ClapTrap::beRepaired(unsigned int amount)
 		std::cout << "ClapTrap " << _name << " has no energy left and cannot repair itself!" << std::endl;
 		return;
 	}
-	_hitPoints = ((_hitPoints + amount) > 10) ? 10 : (_hitPoints + amount);
+	_hitPoints = ((_hitPoints + amount) > 100) ? 100 : (_hitPoints + amount);
 	_energyPoints--;
 	std::cout << "ClapTrap " << _name << " repairs itself for " << amount << " hit points! Current hit points: " << _hitPoints << std::endl;
 }

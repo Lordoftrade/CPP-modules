@@ -6,9 +6,9 @@ int main()
 
 	robot1.attack("Target1");
 
-	robot1.takeDamage(3);
-	robot1.beRepaired(5);
-	robot1.beRepaired(10);
+    robot1.takeDamage(3);
+    robot1.beRepaired(5);
+    robot1.beRepaired(10);
 
 	for (int i = 0; i < 10; ++i)
 	{
