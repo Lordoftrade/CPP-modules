@@ -6,11 +6,11 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:19:11 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/12/02 22:19:19 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/12/11 19:45:38 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fixed.hpp"
+#include "Fixed.hpp"
 
 Fixed::Fixed() : _value(0)
 {
@@ -32,7 +32,7 @@ Fixed::~Fixed()
 Fixed::Fixed(const int intValue)
 {
 	std::cout << "Int constructor called" << std::endl;
-	_value = intValue << bits; 
+	_value = intValue << bits;
 }
 
 Fixed::Fixed(const float floatVal)
