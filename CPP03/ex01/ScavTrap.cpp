@@ -42,7 +42,7 @@ ScavTrap::~ScavTrap()
 }
 
 
-void ScavTrap::attack(const std::string& target) 
+void ScavTrap::attack(const std::string& target)
 {
 	if (_hitPoints == 0)
 	{
@@ -56,6 +56,35 @@ void ScavTrap::attack(const std::string& target)
 	}
 	std::cout << "ScavTrap " << _name << " attacks " << target << ", causing " << _attackDamage << " points of damage!" << std::endl;
 	_energyPoints -= 1;
+}
+
+void ScavTrap::takeDamage(unsigned int amount)
+{
+	if (_hitPoints == 0)
+	{
+		std::cout << "ScavTrap " << _name << " is already at 0 hit points!" << std::endl;
+		return;
+	}
+	_hitPoints = (amount > _hitPoints) ? 0 : (_hitPoints - amount);
+	std::cout << "ScavTrap " << _name << " takes " << amount << " points of damage! Hit points left: " << _hitPoints << std::endl;
+}
+
+
+void ScavTrap::beRepaired(unsigned int amount)
+{
+	if (_hitPoints == 0)
+	{
+		std::cout << "ScavTrap " << _name << " cannot repair itself because it has 0 hit points!" << std::endl;
+		return;
+	}
+	if (_energyPoints == 0)
+	{
+		std::cout << "ScavTrap " << _name << " has no energy left and cannot repair itself!" << std::endl;
+		return;
+	}
+	_hitPoints = ((_hitPoints + amount) > 100) ? 100 : (_hitPoints + amount);
+	_energyPoints--;
+	std::cout << "ScavTrap " << _name << " repairs itself for " << amount << " hit points! Current hit points: " << _hitPoints << std::endl;
 }
 
 void ScavTrap::guardGate()

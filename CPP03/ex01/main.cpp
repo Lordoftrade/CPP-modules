@@ -13,7 +13,7 @@ int main()
     scav1.attack("Enemy1");
     scav1.attack("Enemy2");
 
-    for (int i = 0; i < 50; ++i) { 
+    for (int i = 0; i < 50; ++i) {
         scav1.attack("Enemy");
     }
     scav1.attack("Enemy3");
@@ -44,9 +44,9 @@ int main()
 
     std::cout << "\n==== Test: Copy and Assignment ====" << std::endl;
     ScavTrap scav4("CopyTarget");
-    scav4 = scav3; // Присваивание
+    scav4 = scav3;
     scav4.attack("Enemy5");
-    ScavTrap scav5(scav4); // Копирование
+    ScavTrap scav5(scav4);
     scav5.attack("Enemy6");
 
     std::cout << "\n==== Test: Dynamic Allocation ====" << std::endl;
