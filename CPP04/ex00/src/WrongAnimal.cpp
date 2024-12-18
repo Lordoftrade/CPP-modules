@@ -13,8 +13,8 @@ WrongAnimal::WrongAnimal(const WrongAnimal& other) : type(other.type)
 WrongAnimal& WrongAnimal::operator=(const WrongAnimal& other)
 {
 	if (this == &other) {return *this;}
-	
-	type == other.type;
+
+	type = other.type;
 	std::cout << "WrongAnimal assigned\n";
 	return *this;
 }
