@@ -5,7 +5,7 @@ const char* Form::GradeTooHighException::what() const throw() {
 }
 
 const char* Form::GradeTooLowException::what() const throw() {
-    return "Form grade is too low!";
+	return "Form grade is too low!";
 }
 
 /*
@@ -16,7 +16,7 @@ class Form::GradeTooHighException : public std::exception {
 
 class Form::GradeTooLowException : public std::exception {
 	public:
-		virtual const char* what() const throw() { return ("Grade too low"); } 
+		virtual const char* what() const throw() { return ("Grade too low"); }
 };
 */
 
@@ -30,7 +30,7 @@ Form::Form(const std::string& name, int gradeToSign, int gradeToExecute)
 		throw GradeTooHighException();
 	if (gradeToSign > 150 || gradeToExecute > 150)
 		throw GradeTooLowException();
-	std::cout << "Form: " << getName() << " Constructor created with parameters - GradeToSign: " 
+	std::cout << "Form: " << getName() << " Constructor created with parameters - GradeToSign: "
 			<< getRequiredGradeToSign() << ", GradeToExecute: " << getRequiredGradeToExecute() << std::endl;
 }
 

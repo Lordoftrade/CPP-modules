@@ -2,14 +2,14 @@
 
 RobotomyRequestForm::RobotomyRequestForm(): AForm("Robotomy default form", 72, 45), _target("default target")
 {
-	std::cout << "RobotomyRequestForm " << getName() << " Constructor created with parameters - GradeToSign: " 
+	std::cout << "RobotomyRequestForm " << getName() << " Constructor created with parameters - GradeToSign: "
 			<< getRequiredGradeToSign() << ", GradeToExecute: " << getRequiredGradeToExecute() << std::endl;
 }
 
 RobotomyRequestForm::RobotomyRequestForm(const std::string& target)
 	: AForm("Robotomy form", 72, 45), _target(target)
 {
-	std::cout << "RobotomyRequestForm created for target: " << _target << " with parameters - GradeToSign: " 
+	std::cout << "RobotomyRequestForm created for target: " << _target << " with parameters - GradeToSign: "
 			<< getRequiredGradeToSign() << ", GradeToExecute: " << getRequiredGradeToExecute() << std::endl;
 }
 
@@ -46,5 +46,4 @@ void RobotomyRequestForm::execute(const Bureaucrat& executor) const
 		std::cout << _target << " has been robotomized successfully!" << std::endl;
 	else
 		std::cout << "Robotomy failed on " << _target << "!!!" << std::endl;
-
 }

@@ -2,14 +2,14 @@
 
 PresidentialPardonForm::PresidentialPardonForm(): AForm("PresidentialPardon default form", 25, 5), _target("default target")
 {
-	std::cout << "PresidentialPardonForm " << getName() << " Constructor created with parameters - GradeToSign: " 
+	std::cout << "PresidentialPardonForm " << getName() << " Constructor created with parameters - GradeToSign: "
 			<< getRequiredGradeToSign() << ", GradeToExecute: " << getRequiredGradeToExecute() << std::endl;
 }
 
 PresidentialPardonForm::PresidentialPardonForm(const std::string& target)
 	: AForm("PresidentialPardon", 25, 5), _target(target)
 {
-	std::cout << "PresidentialPardonForm created for target: " << _target << " with parameters - GradeToSign: " 
+	std::cout << "PresidentialPardonForm created for target: " << _target << " with parameters - GradeToSign: "
 			<< getRequiredGradeToSign() << ", GradeToExecute: " << getRequiredGradeToExecute() << std::endl;
 }
 
@@ -38,6 +38,5 @@ PresidentialPardonForm::~PresidentialPardonForm()
 void PresidentialPardonForm::execute(const Bureaucrat& executor) const
 {
 	AForm::execute(executor);
-
 	std::cout << _target << " has been pardoned by Zaphod Beeblebrox." << std::endl;
 }

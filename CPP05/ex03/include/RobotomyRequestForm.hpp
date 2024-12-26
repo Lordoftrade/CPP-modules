@@ -3,7 +3,7 @@
 
 #include "AForm.hpp"
 #include <cstdlib> // rand()
-#include <ctime>   // srand() без выдает фикс число
+#include <ctime> // srand() без выдает фикс число
 
 class RobotomyRequestForm : public AForm {
 	private:
