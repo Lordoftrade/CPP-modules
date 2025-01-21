@@ -19,8 +19,28 @@ static bool isFloat(const std::string& input) {
 	char* end;
 	errno = 0;
 	std::strtod(input.c_str(), &end);
-	return (*end == 'f' && *(end + 1) == '\0' && errno == 0);
+
+	if (*end == 'f' && *(end + 1) == '\0') {
+		bool hasDecimalPoint = false;
+		bool hasExponent = false;
+
+		for (size_t i = 0; i < input.length(); ++i) {
+			if (input[i] == '.') {
+				hasDecimalPoint = true;
+			} else if (input[i] == 'e' || input[i] == 'E') {
+				hasExponent = true;
+			}
+			if (input[i] == 'f') {
+				break;
+			}
+		}
+		if (hasDecimalPoint || hasExponent) {
+			return true;
+		}
+	}
+	return false; 
 }
+
 
 static bool isDouble(const std::string& input) {
 	char* end;
@@ -207,11 +227,3 @@ void ScalarConverter::convert(const std::string& input) {
 		std::cout << "double: impossible" << std::endl;
 	}
 }
-
-/*if (errno == ERANGE) {
-    if (value == LONG_MAX) {
-        std::cout << "Value exceeds LONG_MAX." << std::endl;
-    } else if (value == LONG_MIN) {
-        std::cout << "Value below LONG_MIN." << std::endl;
-    }
-}*/
