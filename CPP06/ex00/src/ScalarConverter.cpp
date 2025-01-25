@@ -12,15 +12,23 @@ static bool isInt(const std::string& input) {
 	char* end;
 	errno = 0;
 	long value = ::strtol(input.c_str(), &end, 10);
-	return (*end == '\0' && errno != ERANGE && value >= std::numeric_limits<int>::min() && value <= std::numeric_limits<int>::max());
+	if (*end != '\0' || errno == ERANGE) {
+		return false;
+	}
+	return (value >= std::numeric_limits<int>::min() && value <= std::numeric_limits<int>::max());
 }
 
 static bool isFloat(const std::string& input) {
 	char* end;
 	errno = 0;
-	std::strtod(input.c_str(), &end);
+	double value = std::strtod(input.c_str(), &end);
 
 	if (*end == 'f' && *(end + 1) == '\0') {
+
+		if (errno == ERANGE || value > std::numeric_limits<float>::max() || value < -std::numeric_limits<float>::max()) {
+			return false;
+		}
+
 		bool hasDecimalPoint = false;
 		bool hasExponent = false;
 
@@ -34,19 +42,23 @@ static bool isFloat(const std::string& input) {
 				break;
 			}
 		}
-		if (hasDecimalPoint || hasExponent) {
-			return true;
-		}
+		return (hasDecimalPoint || hasExponent);
 	}
-	return false; 
+	return false;
 }
 
 
 static bool isDouble(const std::string& input) {
 	char* end;
 	errno = 0;
-	std::strtod(input.c_str(), &end);
-	return (*end == '\0' && errno == 0);
+	double value = std::strtod(input.c_str(), &end);
+	if (*end == '\0' && errno == 0) {
+		return true;
+	}
+	if (errno == ERANGE || value > std::numeric_limits<double>::max() || value < -std::numeric_limits<double>::max()) {
+		return false;
+	}
+	return false;
 }
 
 static ScalarType determineType(const std::string& input) {
@@ -125,31 +137,42 @@ void ScalarConverter::convert(const std::string& input) {
 			std::cout << "float: " << input + "f" << std::endl;
 			std::cout << "double: " << input << std::endl;
 		} else {
-			if (value >= std::numeric_limits<char>::min() && value <= std::numeric_limits<char>::max()) {
-				char c = static_cast<char>(value);
-				if (std::isprint(c)) {
-					std::cout << "char: '" << c << "'" << std::endl;
-				} else {
-					std::cout << "char: Non displayable" << std::endl;
-				}
-			} else {
+			if (value > std::numeric_limits<double>::max() || value < -std::numeric_limits<double>::max()) {
 				std::cout << "char: impossible" << std::endl;
-			}
-
-			if (value >= std::numeric_limits<int>::min() && value <= std::numeric_limits<int>::max()) {
-				std::cout << "int: " << static_cast<int>(value) << std::endl;
-			} else {
 				std::cout << "int: impossible" << std::endl;
-			}
-
-			if (value > std::numeric_limits<float>::max() || value < -std::numeric_limits<float>::max()) {
 				std::cout << "float: impossible" << std::endl;
+				std::cout << "double: impossible" << std::endl;
 			} else {
+				if (value >= std::numeric_limits<char>::min() && value <= std::numeric_limits<char>::max()) {
+					char c = static_cast<char>(value);
+					if (std::isprint(c)) {
+						std::cout << "char: '" << c << "'" << std::endl;
+					} else {
+						std::cout << "char: Non displayable" << std::endl;
+					}
+				} else {
+					std::cout << "char: impossible" << std::endl;
+				}
+
+				if (value >= std::numeric_limits<int>::min() && value <= std::numeric_limits<int>::max()) {
+					std::cout << "int: " << static_cast<int>(value) << std::endl;
+				} else {
+					std::cout << "int: impossible" << std::endl;
+				}
+
+				if (value > std::numeric_limits<float>::max() || value < -std::numeric_limits<float>::max()) {
+					std::cout << "float: impossible" << std::endl;
+				} else {
+					float f_value = static_cast<float>(value);
+					if (value == static_cast<int>(value)) {
+						std::cout << "float: " << f_value << ".0f" << std::endl;
+					} else {
+						std::cout << "float: " << f_value << "f" << std::endl;
+					}
+				}
 				if (value == static_cast<int>(value)) {
-					std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
 					std::cout << "double: " << value << ".0" << std::endl;
 				} else {
-					std::cout << "float: " << static_cast<float>(value) << "f" << std::endl;
 					std::cout << "double: " << value << std::endl;
 				}
 			}
