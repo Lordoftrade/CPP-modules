@@ -9,9 +9,10 @@ int main()
 		sp.addNumber(17);
 		sp.addNumber(9);
 		sp.addNumber(11);
-		//sp.addNumber(100);
 		std::cout << sp.shortestSpan() << std::endl;
 		std::cout << sp.longestSpan() << std::endl;
+
+		//sp.addNumber(100);
 	}
 	catch (const std::exception& e) {
 		std::cerr << "Error: " << e.what() << std::endl;
@@ -21,7 +22,7 @@ int main()
 		Span sp2(10000);
 		std::vector<int> bigData(10000);
 		for (int i = 0; i < 10000; ++i) {
-			bigData[i] = i * 2; // Чётные числа
+			bigData[i] = i * 2;
 		}
 		sp2.addNumbers(bigData.begin(), bigData.end());
 		std::cout << "Big Data - Shortest Span: " << sp2.shortestSpan() << std::endl;
@@ -29,5 +30,6 @@ int main()
 	} catch (const std::exception& e) {
 		std::cerr << "Error: " << e.what() << std::endl;
 	}
+
 	return 0;
 }

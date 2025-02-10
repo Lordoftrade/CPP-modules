@@ -11,21 +11,22 @@ int main() {
 	// {
 	// 	numbers.push_back(i);
 	// }
-	std::cout << "hello\n";
+
+	std::cout << "------------" << std::endl;
 	try {
 		std::vector<int>::iterator it = easyfind(numbers, 30);
 		std::cout << "Found: " << *it << std::endl;
 	} catch (const std::exception& e) {
 		std::cerr << e.what() << std::endl;
 	}
-
+	std::cout << "------------" << std::endl;
 	try {
 		std::vector<int>::iterator it = easyfind(numbers, 50);
 		std::cout << "Found: " << *it << std::endl;
 	} catch (const std::exception& e) {
 		std::cerr << e.what() << std::endl;
 	}
-
+	std::cout << "------------" << std::endl;
 	return 0;
 }
 
