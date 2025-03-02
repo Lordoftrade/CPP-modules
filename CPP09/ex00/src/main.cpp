@@ -45,6 +45,7 @@ bool isValidNumber(const std::string &str) {
 	bool hasDot = false;
 	bool hasMinus = false;
 	if (str.empty()) return false;
+	if (str[0] == '.') return false;
 
 	for (size_t i = 0; i < str.size(); i++) {
 		if (str[i] == '-') {
@@ -62,7 +63,6 @@ bool isValidNumber(const std::string &str) {
 	return true;
 }
 
-
 int main(int argc, char *argv[]) {
 	if (argc != 2 ) {
 		std::cerr << "Mistake: specify the input data file." << std::endl;
@@ -78,7 +78,14 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::string line;
-	std::getline(inputFile, line);
+	if (std::getline(inputFile, line)) {
+		line = trim(line);
+		if (line != "date | value") {
+			std::cerr << "Error: incorrect header => There must be a 'date | value'" << std::endl;
+			return 1;
+		}
+	}
+	
 	while (std::getline(inputFile, line)) {
 		line = trim(line);
 		if (line.empty()) continue;
@@ -94,6 +101,11 @@ int main(int argc, char *argv[]) {
 			}
 
 			valueStr.erase(valueStr.find_last_not_of(" \t\r\n") + 1);
+
+			if (valueStr == "-" || valueStr.empty() || valueStr == ".") { 
+				std::cerr << "Error: bad input => " << line << std::endl;
+				continue;
+			}
 
 			if (!isValidNumber(valueStr)) {
 				std::cerr << "Error: bad input => " << line << std::endl;

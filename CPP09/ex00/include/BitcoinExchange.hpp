@@ -5,6 +5,8 @@
 #include <map>
 #include <fstream>
 #include <sstream>
+#include <iomanip> 
+#include <cmath>
 
 class BitcoinExchange {
 	private:
