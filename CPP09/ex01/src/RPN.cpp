@@ -37,7 +37,7 @@ int RPN::evaluate(const std::string &expression) {
 	std::string token;
 
 	while (iss >> token) {
-		if (isdigit(token[0])) {
+		if (token.size() == 1 && isdigit(token[0])) {
 			stack.push(token[0] - '0');
 		}
 		else if (token.size() == 1 &&  isOperator(token[0])) {
