@@ -9,9 +9,8 @@ int main(int argc, char **argv) {
 	PmergeMe sorter;
 	sorter.parseArguments(argc, argv);
 
-	sorter.printResults(true); // Print before sorting
-	sorter.printResults(false); // Print after sorting
-	sorter.sortAndMeasure(); // Sort and measure time
+	sorter.printResults(true, sorter.getVector());
+	sorter.sortAndMeasure(); 
 
 	return 0;
 }

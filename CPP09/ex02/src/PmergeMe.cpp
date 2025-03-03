@@ -1,9 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                            PmergeMe.cpp                                    */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "PmergeMe.hpp"
 
 PmergeMe::PmergeMe() {}
@@ -19,6 +13,10 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 }
 
 PmergeMe::~PmergeMe() {}
+
+const std::vector<int> &PmergeMe::getVector() const {
+	return vec;
+}
 
 void PmergeMe::parseArguments(int argc, char **argv) {
 	for (int i = 1; i < argc; ++i) {
@@ -38,6 +36,7 @@ void PmergeMe::sortAndMeasure() {
 	start = getTime();
 	fordJohnsonSort(vec);
 	end = getTime();
+	printResults(false, vec);
 	std::cout << "Time to process a range of " << vec.size()
 				<< " elements with std::vector: " << std::fixed << std::setprecision(5) << (end - start) / 1000000.0 << " us\n";
 	start = getTime();
@@ -47,10 +46,10 @@ void PmergeMe::sortAndMeasure() {
 				<< " elements with std::deque: " << std::fixed << std::setprecision(5) << (end - start) / 1000000.0 << " us\n";
 }
 
-void PmergeMe::printResults(bool before) const {
+void PmergeMe::printResults(bool before, const std::vector<int> &container) const {
 	std::cout << (before ? "Before: " : "After: ");
-	for (size_t i = 0; i < vec.size(); ++i)
-		std::cout << vec[i] << " ";
+	for (size_t i = 0; i < container.size(); ++i)
+		std::cout << container[i] << " ";
 	std::cout << "\n";
 }
 
@@ -81,10 +80,74 @@ void PmergeMe::mergeInsertionSort(T &container) {
 	container.insert(container.end(), itRight, right.end());
 }
 
+std::vector<int> PmergeMe::generateJacobsthalSequence(size_t size) {
+	std::vector<int> jacobsthal;
+	jacobsthal.push_back(0);
+	jacobsthal.push_back(1);
+
+	while (jacobsthal.back() < static_cast<int>(size)) {
+		jacobsthal.push_back(jacobsthal[jacobsthal.size() - 1] + 2 * jacobsthal[jacobsthal.size() - 2]);
+	}
+	return jacobsthal;
+}
+
+template <typename T>
+void PmergeMe::insertUsingJacobsthal(T &container, std::list<int> &remaining) {
+	std::vector<int> jacobsthal = generateJacobsthalSequence(remaining.size());
+	for (size_t i = 1; i < jacobsthal.size() && !remaining.empty(); ++i) {
+		int index = jacobsthal[i];
+		std::list<int>::iterator it = remaining.begin();
+
+		std::advance(it, std::min(index, static_cast<int>(remaining.size() - 1)));
+		container.insert(std::upper_bound(container.begin(), container.end(), *it), *it);
+		remaining.erase(it);
+	}
+}
+
 void PmergeMe::fordJohnsonSort(std::vector<int> &container) {
-	mergeInsertionSort(container);
+	std::vector<int> bigElements;
+	std::list<int> remaining;
+
+	for (size_t i = 0; i < container.size(); i += 2) {
+		if (i + 1 < container.size()) {
+			if (container[i] > container[i + 1]) {
+				bigElements.push_back(container[i]);
+				remaining.push_back(container[i + 1]);
+			} else {
+				bigElements.push_back(container[i + 1]);
+				remaining.push_back(container[i]);
+			}
+		} else {
+			remaining.push_back(container[i]); // Если нечетное число элементов, оставшийся идёт в меньшие
+		}
+	}
+
+	mergeInsertionSort(bigElements);
+	insertUsingJacobsthal(bigElements, remaining);
+
+	container = bigElements;
 }
 
 void PmergeMe::fordJohnsonSort(std::deque<int> &container) {
-	mergeInsertionSort(container);
+	std::deque<int> bigElements;
+	std::list<int> remaining;
+
+	for (size_t i = 0; i < container.size(); i += 2) {
+		if (i + 1 < container.size()) {
+			if (container[i] > container[i + 1]) {
+				bigElements.push_back(container[i]);
+				remaining.push_back(container[i + 1]);
+			} else {
+				bigElements.push_back(container[i + 1]);
+				remaining.push_back(container[i]);
+			}
+		} else {
+			remaining.push_back(container[i]); // Если нечетное число элементов, оставшийся идёт в меньшие
+		}
+	}
+
+    mergeInsertionSort(bigElements);
+    insertUsingJacobsthal(bigElements, remaining);
+
+    container = bigElements; // Обновляем контейнер только отсортированными элементами
 }

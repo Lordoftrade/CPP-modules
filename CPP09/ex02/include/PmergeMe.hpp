@@ -4,9 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <deque>
-#include <ctime>
+#include <list>
 #include <cstdlib>
 #include <sys/time.h>
+#include <algorithm>
 #include <iomanip>
 
 class PmergeMe {
@@ -22,7 +23,8 @@ class PmergeMe {
 
 		void parseArguments(int argc, char **argv);
 		void sortAndMeasure();
-		void printResults(bool before) const;
+		void printResults(bool before, const std::vector<int> &container) const;
+		const std::vector<int> &getVector() const;
 
 	private:
 		void fordJohnsonSort(std::vector<int> &container);
@@ -31,6 +33,10 @@ class PmergeMe {
 		template <typename T>
 		void mergeInsertionSort(T &container);
 
+		template <typename T>
+		void insertUsingJacobsthal(T &container, std::list<int> &remaining);
+
+		std::vector<int> generateJacobsthalSequence(size_t size);
 		double getTime();
 };
 
