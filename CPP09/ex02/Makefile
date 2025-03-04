@@ -1,7 +1,7 @@
 NAME = PmergeMe
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Iinclude
+CXXFLAGS = -Wall -Wextra -Werror  -Iinclude #-std=c++98
 
 SRCDIR = src
 INCDIR = include
