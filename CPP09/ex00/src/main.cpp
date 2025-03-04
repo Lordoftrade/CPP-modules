@@ -63,10 +63,12 @@ bool isValidNumber(const std::string &str) {
 }
 
 int main(int argc, char *argv[]) {
+
 	if (argc != 2 ) {
 		std::cerr << "Mistake: specify the input data file." << std::endl;
 		return 1;
 	}
+
 	BitcoinExchange btc;
 	btc.loadCSV("data.csv");
 
@@ -84,14 +86,14 @@ int main(int argc, char *argv[]) {
 			return 1;
 		}
 	}
-	
+
 	while (std::getline(inputFile, line)) {
 		line = trim(line);
 		if (line.empty()) continue;
 		std::stringstream ss(line);
 		std::string date, valueStr;
 		double value;
-	
+
 		if (std::getline(ss, date, '|') && std::getline(ss >> std::ws, valueStr)) {
 			date.erase(date.find_last_not_of(" \t\r\n") + 1);
 			if (!isValidDate(date)) {
@@ -101,7 +103,7 @@ int main(int argc, char *argv[]) {
 
 			valueStr.erase(valueStr.find_last_not_of(" \t\r\n") + 1);
 
-			if (valueStr == "-" || valueStr.empty() || valueStr == ".") { 
+			if (valueStr == "-" || valueStr.empty() || valueStr == ".") {
 				std::cerr << "Error: bad input => " << line << std::endl;
 				continue;
 			}
@@ -128,7 +130,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		else {
-			std::cerr << "Error: Incorrect string format => " << line << std::endl;
+			std::cerr << "Error: bad input =>  " << line << std::endl;
 		}
 	}
 	inputFile.close();

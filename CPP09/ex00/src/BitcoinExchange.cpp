@@ -22,7 +22,7 @@ void BitcoinExchange::loadCSV(const std::string &filename) {
 		return;
 	}
 	std::string line;
-	std::getline(file, line); // Skip the title
+	std::getline(file, line);
 	while (std::getline(file, line)) {
 		std::stringstream ss(line);
 		std::string date;

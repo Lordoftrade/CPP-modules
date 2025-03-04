@@ -93,157 +93,126 @@ std::vector<int> PmergeMe::generateJacobsthalSequence(size_t size) {
 
 template <typename T>
 void PmergeMe::insertUsingJacobsthal(T &container, std::list<int> &remaining) {
-    std::vector<int> jacobsthal = generateJacobsthalSequence(remaining.size());
+	std::vector<int> jacobsthal = generateJacobsthalSequence(remaining.size());
 
-    for (size_t i = 1; i < jacobsthal.size() && !remaining.empty(); ++i) {
-        int index = jacobsthal[i];
-        std::list<int>::iterator it = remaining.begin();
+	for (size_t i = 1; i < jacobsthal.size() && !remaining.empty(); ++i) {
+		int index = jacobsthal[i];
+		std::list<int>::iterator it = remaining.begin();
 
-        if (index >= static_cast<int>(remaining.size())) {
-            index = remaining.size() - 1;
-        }
-        
-        std::advance(it, index);
-        container.insert(std::upper_bound(container.begin(), container.end(), *it), *it);
-        remaining.erase(it);
+		if (index >= static_cast<int>(remaining.size())) {
+			index = remaining.size() - 1;
+		}
 
-		std::cout << "После вставки " << *it << ":\n";
-        std::cout << "Big Elements: ";
-        for (size_t num : container) std::cout << num << " ";
-        std::cout << "\nRemaining: ";
-        for (int num : remaining) std::cout << num << " ";
-        std::cout << "\n";
-    }
+		std::advance(it, index);
+		container.insert(std::upper_bound(container.begin(), container.end(), *it), *it);
+		remaining.erase(it);
+	}
 
-    while (!remaining.empty()) {
-        int value = remaining.front();
-        container.insert(std::upper_bound(container.begin(), container.end(), value), value);
-        remaining.pop_front();
-
-		std::cout << "После вставки " << value << ":\n";
-        std::cout << "Big Elements: ";
-        for (size_t num : container) std::cout << num << " ";
-        std::cout << "\nRemaining: ";
-        for (int num : remaining) std::cout << num << " ";
-        std::cout << "\n";
-    }
+	while (!remaining.empty()) {
+		int value = remaining.front();
+		container.insert(std::upper_bound(container.begin(), container.end(), value), value);
+		remaining.pop_front();
+	}
 }
 
 
 void PmergeMe::fordJohnsonSort(std::vector<int> &container) {
-    std::vector<int> bigElements;
-    std::list<int> remaining;
+	std::vector<int> bigElements;
+	std::list<int> remaining;
 
-    for (size_t i = 0; i < container.size(); i += 2) {
-        if (i + 1 < container.size()) {
-            if (container[i] > container[i + 1]) {
-                bigElements.push_back(container[i]);
-                remaining.push_back(container[i + 1]);
-            } else {
-                bigElements.push_back(container[i + 1]);
-                remaining.push_back(container[i]);
-            }
-        } else {
-            remaining.push_back(container[i]);
-        }
-    }
+	for (size_t i = 0; i < container.size(); i += 2) {
+		if (i + 1 < container.size()) {
+			if (container[i] > container[i + 1]) {
+				bigElements.push_back(container[i]);
+				remaining.push_back(container[i + 1]);
+			} else {
+				bigElements.push_back(container[i + 1]);
+				remaining.push_back(container[i]);
+			}
+		} else {
+			remaining.push_back(container[i]);
+		}
+	}
 
-	std::cout << "Big Elements: ";
-    for (size_t num : bigElements) std::cout << num << " ";
-    std::cout << "\nRemaining (меньшие): ";
-    for (int num : remaining) std::cout << num << " ";
-    std::cout << "\n";
+	while (bigElements.size() > 1) {
+		std::vector<int> newBigElements;
 
-    while (bigElements.size() > 1) {
-        std::vector<int> newBigElements;
+		for (size_t i = 0; i < bigElements.size(); i += 2) {
+			if (i + 1 < bigElements.size()) {
+				if (bigElements[i] > bigElements[i + 1]) {
+					newBigElements.push_back(bigElements[i]);
+					remaining.push_back(bigElements[i + 1]);
+				} else {
+					newBigElements.push_back(bigElements[i + 1]);
+					remaining.push_back(bigElements[i]);
+				}
+			} else {
+				newBigElements.push_back(bigElements[i]);
+			}
+		}
+		bigElements = newBigElements;
+	}
 
-        for (size_t i = 0; i < bigElements.size(); i += 2) {
-            if (i + 1 < bigElements.size()) {
-                if (bigElements[i] > bigElements[i + 1]) {
-                    newBigElements.push_back(bigElements[i]);
-                    remaining.push_back(bigElements[i + 1]);
-                } else {
-                    newBigElements.push_back(bigElements[i + 1]);
-                    remaining.push_back(bigElements[i]);
-                }
-            } else {
-                newBigElements.push_back(bigElements[i]);
-            }
-        }
-        bigElements = newBigElements;
+	mergeInsertionSort(bigElements);
+	insertUsingJacobsthal(bigElements, remaining);
 
-		std::cout << "После разбиения: ";
-		for (size_t num : bigElements) std::cout << num << " ";
-		std::cout << "\nRemaining: ";
-		for (int num : remaining) std::cout << num << " ";
-		std::cout << "\n";
-    }
-
-	std::cout << "=== Перед сортировкой Merge-Insertion ===\n";
-	std::cout << "Big Elements (до сортировки): ";
-	for (size_t num : bigElements) std::cout << num << " ";
-	std::cout << "\n";
-
-    mergeInsertionSort(bigElements);
-
-	std::cout << "Big Elements (после сортировки): ";
-	for (size_t num : bigElements) std::cout << num << " ";
-	std::cout << "\n";
-	
-
-	std::cout << "=== Начинаем вставку меньших элементов по Якобсталю ===\n";
-	std::cout << "Big Elements (перед вставкой): ";
-	for (size_t num : bigElements) std::cout << num << " ";
-	std::cout << "\nRemaining: ";
-	for (int num : remaining) std::cout << num << " ";
-	std::cout << "\n";
-
-    insertUsingJacobsthal(bigElements, remaining);
-
-    container = bigElements;
+	container = bigElements;
 }
 
 
 void PmergeMe::fordJohnsonSort(std::deque<int> &container) {
-    std::deque<int> bigElements;
-    std::list<int> remaining;
+	std::deque<int> bigElements;
+	std::list<int> remaining;
 
-    for (size_t i = 0; i < container.size(); i += 2) {
-        if (i + 1 < container.size()) {
-            if (container[i] > container[i + 1]) {
-                bigElements.push_back(container[i]);
-                remaining.push_back(container[i + 1]);
-            } else {
-                bigElements.push_back(container[i + 1]);
-                remaining.push_back(container[i]);
-            }
-        } else {
-            remaining.push_back(container[i]); 
-        }
-    }
+	for (size_t i = 0; i < container.size(); i += 2) {
+		if (i + 1 < container.size()) {
+			if (container[i] > container[i + 1]) {
+				bigElements.push_back(container[i]);
+				remaining.push_back(container[i + 1]);
+			} else {
+				bigElements.push_back(container[i + 1]);
+				remaining.push_back(container[i]);
+			}
+		} else {
+			remaining.push_back(container[i]);
+		}
+	}
 
-    while (bigElements.size() > 1) {
-        std::deque<int> newBigElements;
+	while (bigElements.size() > 1) {
+		std::deque<int> newBigElements;
 
-        for (size_t i = 0; i < bigElements.size(); i += 2) {
-            if (i + 1 < bigElements.size()) {
-                if (bigElements[i] > bigElements[i + 1]) {
-                    newBigElements.push_back(bigElements[i]);
-                    remaining.push_back(bigElements[i + 1]);
-                } else {
-                    newBigElements.push_back(bigElements[i + 1]);
-                    remaining.push_back(bigElements[i]);
-                }
-            } else {
-                newBigElements.push_back(bigElements[i]);
-            }
-        }
-        bigElements = newBigElements;
-    }
+		for (size_t i = 0; i < bigElements.size(); i += 2) {
+			if (i + 1 < bigElements.size()) {
+				if (bigElements[i] > bigElements[i + 1]) {
+					newBigElements.push_back(bigElements[i]);
+					remaining.push_back(bigElements[i + 1]);
+				} else {
+					newBigElements.push_back(bigElements[i + 1]);
+					remaining.push_back(bigElements[i]);
+				}
+			} else {
+				newBigElements.push_back(bigElements[i]);
+			}
+		}
+		bigElements = newBigElements;
+	}
 
-    mergeInsertionSort(bigElements);
+	mergeInsertionSort(bigElements);
 
-    insertUsingJacobsthal(bigElements, remaining);
+	insertUsingJacobsthal(bigElements, remaining);
 
-    container = bigElements;
+	container = bigElements;
 }
+
+//for (std::vector<int>::iterator it = container.begin(); it != container.end(); ++it)
+//   std::cout << *it << " ";
+
+// std::cout << "Big Elements: ";
+// for (std::vector<int>::iterator it = bigElements.begin(); it != bigElements.end(); ++it)
+//     std::cout << *it << " ";
+// std::cout << "\n";
+
+// std::cout << "Remaining: ";
+// for (std::list<int>::iterator it = remaining.begin(); it != remaining.end(); ++it)
+//     std::cout << *it << " ";
+// std::cout << "\n";
